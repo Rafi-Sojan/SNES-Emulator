@@ -1,5 +1,5 @@
 ﻿
-#include "emulator.h"
+#include "../include/emulator.h"
 
 using namespace std;
 
