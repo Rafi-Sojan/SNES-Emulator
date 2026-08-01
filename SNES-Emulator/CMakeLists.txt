@@ -12,7 +12,7 @@ endif()
 project ("SNES-Emulator")
 
 # Add source to this project's executable.
-add_executable (SNES-Emulator "src/emulator-main.cpp" "include/emulator.h")
+add_executable (SNES-Emulator "src/emulator-main.cpp" "include/emulator.h" "src/cpu.cpp" "src/ppu.cpp" "src/apu.cpp" "src/memory.cpp" "src/bus.cpp" "include/cpu.h" "include/ppu.h" "include/apu.h" "include/cartridge.h" "include/bus.h" "include/memory.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET SNES-Emulator PROPERTY CXX_STANDARD 20)
