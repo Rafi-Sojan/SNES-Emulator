@@ -1,4 +1,5 @@
 ﻿#include "../include/emulator.h"
+#include "../include/bus.h"
 #include <SFML/Graphics.hpp>
 
 int main()
@@ -20,6 +21,5 @@ int main()
         window.clear(sf::Color::Black);
         window.display();
     }
-
     return 0;
 }
