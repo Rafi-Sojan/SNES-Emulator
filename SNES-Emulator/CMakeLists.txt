@@ -18,4 +18,14 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET SNES-Emulator PROPERTY CXX_STANDARD 20)
 endif()
 
+find_package(SFML CONFIG REQUIRED COMPONENTS system window graphics audio)
+
+target_include_directories(SNES-Emulator PRIVATE include)
+
+target_link_libraries(SNES-Emulator PRIVATE
+    sfml-system
+    sfml-window
+    sfml-graphics
+    sfml-audio
+)
 # TODO: Add tests and install targets if needed.
