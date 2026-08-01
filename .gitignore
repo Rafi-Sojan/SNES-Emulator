@@ -1,0 +1,40 @@
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+
+# Build directories
+out/
+build/
+x64/
+x86/
+Debug/
+Release/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+
+# Ninja
+.ninja*
+build.ninja
+
+# Visual Studio generated
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.exp
+*.idb
+
+# User files
+*.user
+*.suo
+
+# Logs
+*.log
