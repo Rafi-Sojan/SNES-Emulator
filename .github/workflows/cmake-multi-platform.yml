@@ -55,15 +55,13 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    # Install SFML on Ubuntu
     - name: Install SFML (Ubuntu)
       if: runner.os == 'Linux'
       run: |
         sudo apt update
         sudo apt install -y libsfml-dev ninja-build
 
-    # Clone and build vcpkg
-    - name: Setup vcpkg (Windows)
+    - name: Install vcpkg and SFML (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
@@ -79,8 +77,8 @@ jobs:
         cmake
         -B ${{ steps.strings.outputs.build-output-dir }}
         -S ${{ github.workspace }}/SNES-Emulator
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
     - name: Configure CMake (Windows)
@@ -94,6 +92,8 @@ jobs:
           -S "${{ github.workspace }}/SNES-Emulator" `
           -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
           -DVCPKG_TARGET_TRIPLET=x64-windows `
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} `
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} `
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
     - name: Build
