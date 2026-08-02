@@ -1,4 +1,5 @@
 #include "../include/bus.h"
+#include "../include/cpu.h"
 
 Bus::Bus()
 {

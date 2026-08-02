@@ -4,6 +4,7 @@ Memory::Memory() {
 	ram.fill(0);
 }
 
+
 uint8_t Memory::read(uint32_t address) {
 	return ram[address];
 }
