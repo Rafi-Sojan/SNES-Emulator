@@ -55,21 +55,31 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/SNES-Emulator/build" >> "$GITHUB_OUTPUT"
 
+    # Install SFML on Ubuntu
     - name: Install SFML (Ubuntu)
       if: runner.os == 'Linux'
       run: |
         sudo apt update
         sudo apt install -y libsfml-dev
 
+    # Setup vcpkg on Windows
     - name: Setup vcpkg
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
 
+    # Install SFML using vcpkg
     - name: Install SFML (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
         & "$env:VCPKG_ROOT\vcpkg.exe" install sfml:x64-windows
+
+    # Verify installation (helps debugging)
+    - name: Verify vcpkg packages
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        & "$env:VCPKG_ROOT\vcpkg.exe" list
 
     - name: Configure CMake (Linux)
       if: runner.os == 'Linux'
@@ -92,8 +102,9 @@ jobs:
         cmake `
           -B "${{ steps.strings.outputs.build-output-dir }}" `
           -S "${{ github.workspace }}/SNES-Emulator" `
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-          -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
+          -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
+          -DVCPKG_TARGET_TRIPLET=x64-windows `
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
