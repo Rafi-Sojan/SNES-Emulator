@@ -9,8 +9,7 @@
         "installDir": "${sourceDir}/out/install/${presetName}",
         "cacheVariables": {
           "CMAKE_C_COMPILER": "cl.exe",
-          "CMAKE_CXX_COMPILER": "cl.exe",
-          "CMAKE_TOOLCHAIN_FILE": "C:/Users/Rafi Sojan S/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          "CMAKE_CXX_COMPILER": "cl.exe"
         },
         "condition": {
           "type": "equals",
@@ -57,6 +56,25 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        }
+    ],
+
+     "buildPresets": [
+        {
+            "name": "x64-debug",
+            "configurePreset": "x64-debug"
+        },
+        {
+            "name": "x64-release",
+            "configurePreset": "x64-release"
+        },
+        {
+            "name": "x86-debug",
+            "configurePreset": "x86-debug"
+        },
+        {
+            "name": "x86-release",
+            "configurePreset": "x86-release"
         }
     ]
 }
