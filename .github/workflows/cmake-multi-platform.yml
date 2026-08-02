@@ -55,25 +55,21 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
+    # Install SFML on Ubuntu
     - name: Install SFML (Ubuntu)
       if: runner.os == 'Linux'
       run: |
         sudo apt update
         sudo apt install -y libsfml-dev ninja-build
 
-    - name: Setup vcpkg
+    # Clone and build vcpkg
+    - name: Setup vcpkg (Windows)
       if: runner.os == 'Windows'
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgJsonGlob: '${{ github.workspace }}/SNES-Emulator/vcpkg.json'
-
-    - name: Configure and Build (Windows)
-      if: runner.os == 'Windows'
-      uses: lukka/run-cmake@v10
-      with:
-        cmakeListsTxtPath: '${{ github.workspace }}/SNES-Emulator/CMakeLists.txt'
-        configurePreset: x64-release
-        buildPreset: x64-release
+      shell: pwsh
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+        C:\vcpkg\bootstrap-vcpkg.bat
+        C:\vcpkg\vcpkg.exe install sfml:x64-windows
 
     - name: Configure CMake (Linux)
       if: runner.os == 'Linux'
@@ -83,16 +79,29 @@ jobs:
         cmake
         -B ${{ steps.strings.outputs.build-output-dir }}
         -S ${{ github.workspace }}/SNES-Emulator
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
-    - name: Build (Linux)
-      if: runner.os == 'Linux'
-      # Build your program with the given configuration.
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
+    - name: Configure CMake (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: |
+        cmake `
+          -B "${{ steps.strings.outputs.build-output-dir }}" `
+          -S "${{ github.workspace }}/SNES-Emulator" `
+          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
+          -DVCPKG_TARGET_TRIPLET=x64-windows `
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      # Execute tests defined by the CMake configuration.
+      # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}

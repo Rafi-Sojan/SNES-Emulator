@@ -23,6 +23,8 @@ find_package(SFML CONFIG REQUIRED COMPONENTS system window graphics audio)
 message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
 message(STATUS "VCPKG_TOOLCHAIN = ${CMAKE_TOOLCHAIN_FILE}")
 
+find_package(SFML CONFIG REQUIRED COMPONENTS system window graphics audio)
+
 target_include_directories(SNES-Emulator PRIVATE include)
 
 target_link_libraries(SNES-Emulator PRIVATE
