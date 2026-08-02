@@ -66,6 +66,8 @@ jobs:
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgJsonGlob: '${{ github.workspace }}/SNES-Emulator/vcpkg.json'
+        vcpkgGitCommitId: d015e31e90838a4c9dfa3eed45979bc70d9357fc
+        runVcpkgInstall: true
 
     - name: Configure CMake (Linux)
       if: runner.os == 'Linux'
