@@ -1,7 +1,7 @@
 {
     "name": "snes-emulator",
-    "version": "1.0.0",
-    "builtin-baseline": "HEAD",
+    "version-string": "1.0.0",
+    "builtin-baseline": "d015e31f3d95d9d73d7f0e8f0d6d2f8b7d0b0d4d",
     "dependencies": [
         "sfml"
     ]
