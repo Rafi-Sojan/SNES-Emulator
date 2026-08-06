@@ -10,13 +10,13 @@
 
 struct CPU{
 public:
-	uint16_t A = 0x00; // accumulator
-	uint16_t X = 0x00; // x register
-	uint16_t Y = 0x00; // y register
-	uint16_t STKP = 0x00; // stack pointer
+	uint16_t A = 0x0000; // accumulator
+	uint16_t X = 0x0000; // x register
+	uint16_t Y = 0x0000; // y register
+	uint16_t STKP = 0x0000; // stack pointer
 	uint8_t DBR = 0x00; //Data bank register
-	uint16_t D = 0x00; /// Direct page register
-	uint16_t PC = 0x00; // program counter 
+	uint16_t D = 0x0000; /// Direct page register
+	uint16_t PC = 0x0000; // program counter 
 	uint8_t status = 0x00; // status register
 
 	struct flags {
