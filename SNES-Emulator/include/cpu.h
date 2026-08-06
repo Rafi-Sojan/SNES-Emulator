@@ -22,9 +22,11 @@ public:
 		uint8_t V : 1; // overflow
 		uint8_t M : 1; // accumulator size
 		uint8_t X : 1; // index size
-		uint8_t D : 1; // decimal 
- 		uint8_t Z : 1; // IRQ
+		uint8_t D : 1; // decimal
+		uint8_t I : 1; // irq disable
+ 		uint8_t Z : 1; // zero
 		uint8_t C : 1; // carry
+		uint8_t E : 1; // emulation mode
 		uint8_t B : 1; // break during emulation
  	};
 
