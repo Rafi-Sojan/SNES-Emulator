@@ -13,15 +13,17 @@ public:
 	uint8_t A = 0x00; // accumulator
 	uint8_t X = 0x00; // x register
 	uint8_t Y = 0x00; // y register
-	uint8_t STKP = 0x00; // stack pointer
-	uint8_t PC = 0x00; // program counter 
+	uint16_t STKP = 0x00; // stack pointer
+	uint8_t DBR = 0x00; //Data bank register
+	uint16_t D = 0x00; /// Direct page register
+	uint16_t PC = 0x00; // program counter 
 	uint8_t status = 0x00; // status register
 
 	struct flags {
 		uint8_t N : 1; //negative
 		uint8_t V : 1; // overflow
-		uint8_t M : 1; // accumulator size
-		uint8_t X : 1; // index size
+		uint8_t M : 1; // accumulator size (0 if 16bit,  1 if 8bit)
+		uint8_t X : 1; // index size (0 if 16bit,  1 if 8bit)
 		uint8_t D : 1; // decimal
 		uint8_t I : 1; // irq disable
  		uint8_t Z : 1; // zero
