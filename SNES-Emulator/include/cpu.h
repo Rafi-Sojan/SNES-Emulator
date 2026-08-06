@@ -30,6 +30,16 @@ public:
 		uint8_t B : 1; // break during emulation
  	};
 
+	//addressing modes
+	uint8_t IMP(), IMPMF(), IMPIF(), IMP8B(); // implied, immediate[memoryflag], immediate[indexflag], immediate[8-bit]
+	uint8_t RL(), RLL(); // relative, relative long
+	uint8_t DR(), DRX(), DRY(), DRI(), DRID(), DRII(), DRIL(), DRIIL(); // direct, directindexedX, directIndexedY, directindirect, directindexedindirect, directindirectindexed, directindirectlong, directindirectindexedlong
+	uint8_t AB(), ABX(), ABY(), ABL(), ABIL(); // absolute, absX, absY, abslong, absindexedlong
+	uint8_t SR(), SRII(); // stackrelative, stackrelativeindirectindexed
+	uint8_t ABD(), ABDI(), ABDIL(), ABDII(); // absindirect, absindirectlong, absindexedindirect
+	uint8_t IMA(), BM(); // impaccumulator, blockmove
+
+
 private:
 
 };
