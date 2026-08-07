@@ -65,6 +65,15 @@ public:
 	uint8_t PEI(), PER(), PLA(), PLX(); // Push effective indirect address, Push effective relative address, Pull Accumulator, Pull index register X
 	uint8_t PLY(), PLP(), PLD(), PLB(); // Pull index register Y, Pull porcessor status, Pull direct page register, Pull data bank register
 
+	uint8_t XXX();
+
+	void clock();
+	void reset();
+	void irq();
+	void nmi();
+
+	uint8_t fetch();
+	uint8_t fetched = 0x00;
 
 
 private:

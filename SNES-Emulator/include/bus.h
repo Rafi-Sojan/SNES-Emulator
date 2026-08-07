@@ -15,8 +15,8 @@ class Bus
 public:
     Bus();
 
-    uint8_t read(uint32_t address);
-    void write(uint32_t address, uint8_t data);
+    uint8_t read(uint16_t address);
+    void write(uint16_t address, uint8_t data);
 
 private:
     Memory wram;
