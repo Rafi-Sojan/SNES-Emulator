@@ -5,7 +5,6 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1929, 1080), "SNES Emulator");
-
     while (window.isOpen())
     {
         sf::Event event;

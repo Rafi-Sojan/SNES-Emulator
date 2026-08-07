@@ -12,7 +12,7 @@ const int WRAM_SIZE = 128 * 1024; // work ram size
 const int VRAM_SIZE = 64 * 1024; // video ram size
 const int ARAM_SIZE = 64 * 1024; // audio ram size
 
-class Bus
+struct Bus
 {
 public:
     Bus();
