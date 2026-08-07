@@ -8,15 +8,20 @@
 #include <iostream>
 #include <filesystem>
 #include "memory.h"
-
+const int WRAM_SIZE = 128 * 1024; // work ram size
+const int VRAM_SIZE = 64 * 1024; // video ram size
+const int ARAM_SIZE = 64 * 1024; // audio ram size
 
 class Bus
 {
 public:
     Bus();
-
-    uint8_t read(uint16_t address);
-    void write(uint16_t address, uint8_t data);
+    
+    uint8_t read(uint16_t address); // reading the addresses stored in the registers
+    void write(uint16_t address, uint8_t data); // writing the addresses in the registers
+    uint8_t wram_alloc[WRAM_SIZE]; // simulating the work ram size
+    uint8_t vram_alloc[VRAM_SIZE]; // simulating the video ram size
+    uint8_t aram_alloc[ARAM_SIZE]; // simulating the audio ram size
 
 private:
     Memory wram;
