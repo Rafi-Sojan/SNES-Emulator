@@ -16,5 +16,5 @@ public:
 	void write(uint16_t address, uint8_t value);
 
 private:
-	std::array<uint8_t, 256 * 1024> ram; // simulating onboard ram size 128Kb
+	std::array<uint8_t, 256 * 1024> ram; // simulating onboard ram size 256Kb
 };

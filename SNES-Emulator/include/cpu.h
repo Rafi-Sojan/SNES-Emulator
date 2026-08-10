@@ -8,7 +8,7 @@
 #include <iostream>
 #include <filesystem>
 
-struct CPU{
+struct CPU_65816{
 public:
 	uint16_t A = 0x0000; // accumulator
 	uint16_t X = 0x0000; // x register
@@ -64,6 +64,7 @@ public:
 	uint8_t PHB(), PHK(), PHP(), PEA(); // Push data bank register, Push program bank register, Push processor status, Push effective address
 	uint8_t PEI(), PER(), PLA(), PLX(); // Push effective indirect address, Push effective relative address, Pull Accumulator, Pull index register X
 	uint8_t PLY(), PLP(), PLD(), PLB(); // Pull index register Y, Pull porcessor status, Pull direct page register, Pull data bank register
+	uint8_t TSC();
 
 	uint8_t XXX();
 
@@ -77,5 +78,13 @@ public:
 
 
 private:
+	struct instruction 
+	{
+		std::string name;
+		uint8_t(CPU_65816::* operate)(void) = nullptr;
+		uint8_t(CPU_65816::* addrmode)(void) = nullptr;
+		uint8_t cycles = 0;
+	};
 
+	std::vector<instruction> lookup;
 };
