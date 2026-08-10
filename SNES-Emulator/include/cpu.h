@@ -8,8 +8,9 @@
 #include <iostream>
 #include <filesystem>
 
-struct CPU_65816{
+class CPU_65816{
 public:
+
 	uint16_t A = 0x0000; // accumulator
 	uint16_t X = 0x0000; // x register
 	uint16_t Y = 0x0000; // y register
