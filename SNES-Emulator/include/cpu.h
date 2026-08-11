@@ -34,13 +34,13 @@ public:
  	};
 
 	//addressing modes
-	uint8_t IMP(), IMPMF(), IMPIF(), IMP8B(); // implied, immediate[memoryflag], immediate[indexflag], immediate[8-bit]
+	uint8_t IMP(), IMPMF(), IMPIF(), IMP8B(), IMM(); // implied, immediate[memoryflag], immediate[indexflag], immediate[8-bit]
 	uint8_t RL(), RLL(); // relative, relative long
 	uint8_t DR(), DRX(), DRY(), DRI(), DRID(), DRII(), DRIL(), DRIIL(); // direct, directindexedX, directIndexedY, directindirect, directindexedindirect, directindirectindexed, directindirectlong, directindirectindexedlong
 	uint8_t AB(), ABX(), ABY(), ABL(), ABIL(); // absolute, absX, absY, abslong, absindexedlong
-	uint8_t SR(), SRII(); // stackrelative, stackrelativeindirectindexed
+	uint8_t SR(), SRII(), ST(); // stackrelative, stackrelativeindirectindexed, Stack
 	uint8_t ABD(), ABDI(), ABDIL(), ABDII(); // absindirect, absindirectlong, absindexedindirect
-	uint8_t IMA(), BM(); // impaccumulator, blockmove
+	uint8_t AC(), IMA(), BM(); // accumulator, impaccumulator, blockmove
 
 	//instructions 
 	uint8_t ADC(), SBC(), AND(), EOR(); // add A with carry bit and put in A, subtract with carry bit, AND A with memory and put in A, Exclusive or 
@@ -65,7 +65,8 @@ public:
 	uint8_t PHB(), PHK(), PHP(), PEA(); // Push data bank register, Push program bank register, Push processor status, Push effective address
 	uint8_t PEI(), PER(), PLA(), PLX(); // Push effective indirect address, Push effective relative address, Pull Accumulator, Pull index register X
 	uint8_t PLY(), PLP(), PLD(), PLB(); // Pull index register Y, Pull porcessor status, Pull direct page register, Pull data bank register
-	uint8_t TSC();
+	uint8_t TSC(), MVN(), TDC(), MVP();
+	uint8_t WDM();
 
 	uint8_t XXX();
 
@@ -89,3 +90,4 @@ private:
 
 	std::vector<instruction> lookup;
 };
+
