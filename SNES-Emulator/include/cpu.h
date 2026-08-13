@@ -87,15 +87,15 @@ public:
 
 
 private:
-	uint8_t read(uint32_t address);
-	void write(uint32_t address, uint8_t data);
+	uint8_t read(uint32_t address); // reads the address
+	void write(uint32_t address, uint8_t data); // writes the address
 
-	uint8_t getflag(Flag flag) const;
-	void setflag(Flag flag, bool value);
+	uint8_t getflag(Flag flag) const; // gets the flag 
+	void setflag(Flag flag, bool value); // sets the flag value true or false (0 or 1)
 
 	Bus* bus = nullptr;
 
-	struct instruction 
+	struct instruction // reads from the opcode map 
 	{
 		std::string name;
 		uint8_t(CPU_65816::* operate)(void) = nullptr;

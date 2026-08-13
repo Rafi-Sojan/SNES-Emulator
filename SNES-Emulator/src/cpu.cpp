@@ -83,18 +83,14 @@ void CPU_65816::clock()
 {
 	if (cycles == 0)
 	{
-		const uint32_t programAddress =
-			(static_cast<uint32_t>(PBR) << 16) | PC;
+		const uint32_t programAddress = (static_cast<uint32_t>(PBR) << 16) | PC; 
 
 		opcode = read(programAddress);
 		PC = static_cast<uint16_t>(PC + 1);
 
-		cycles = lookup[opcode].cycles;
-
-		const uint8_t additionalAddressCycles =
-			(this->*lookup[opcode].addrmode)();
-		const uint8_t additionalOperationCycles =
-			(this->*lookup[opcode].operate)();
+		cycles = lookup[opcode].cycles; // retrieves the cycles required from the opcode map
+		const uint8_t additionalAddressCycles = (this->*lookup[opcode].addrmode)();  // retrieves the addressing mode
+		const uint8_t additionalOperationCycles = (this->*lookup[opcode].operate)(); //  retrieves the operation 
 
 		cycles += additionalAddressCycles & additionalOperationCycles;
 	}
