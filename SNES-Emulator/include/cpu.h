@@ -10,6 +10,7 @@
 
 class CPU_65816{
 public:
+	CPU_65816();
 
 	uint16_t A = 0x0000; // accumulator
 	uint16_t X = 0x0000; // x register

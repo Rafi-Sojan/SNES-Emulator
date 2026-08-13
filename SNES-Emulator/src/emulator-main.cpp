@@ -1,6 +1,4 @@
 ﻿#include "../include/emulator.h"
-#include "../src/bus.cpp"
-#include "../src/cpu.cpp"
 #include <SFML/Graphics.hpp>
 
 int main()
