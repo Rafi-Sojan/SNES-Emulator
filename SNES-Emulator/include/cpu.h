@@ -8,9 +8,12 @@
 #include <iostream>
 #include <filesystem>
 
+struct Bus;
+
 class CPU_65816{
 public:
 	CPU_65816();
+	explicit CPU_65816(Bus& connectedBus);
 
 	uint16_t A = 0x0000; // accumulator
 	uint16_t X = 0x0000; // x register
@@ -20,19 +23,18 @@ public:
 	uint16_t D = 0x0000; /// Direct page register
 	uint16_t PC = 0x0000; // program counter 
 	uint8_t status = 0x00; // status register
+	uint8_t PBR = 0x00; //program bank register
 
-	struct flags {
-		uint8_t N : 1; // negative
-		uint8_t V : 1; // overflow
-		uint8_t M : 1; // accumulator size (0 if 16bit,  1 if 8bit)
-		uint8_t X : 1; // index size (0 if 16bit,  1 if 8bit)
-		uint8_t D : 1; // decimal
-		uint8_t I : 1; // irq disable
- 		uint8_t Z : 1; // zero
-		uint8_t C : 1; // carry
-		uint8_t E : 1; // emulation mode
-		uint8_t B : 1; // break during emulation
- 	};
+	enum class Flag : uint8_t {
+		C = 0x01, // carry
+		Z = 0x02, // zero
+		I = 0x04, // IRQ disable
+		D = 0x08, // decimal
+		X = 0x10, // index register size (0 = 16-bit, 1 = 8-bit)
+		M = 0x20, // accumulator size (0 = 16-bit, 1 = 8-bit)
+		V = 0x40, // overflow
+		N = 0x80  // negative
+	};
 
 	//addressing modes
 	uint8_t IMP(), IMPMF(), IMPIF(), IMP8B(), IMM(); // implied, immediate[memoryflag], immediate[indexflag], immediate[8-bit]
@@ -77,10 +79,22 @@ public:
 	void nmi();
 
 	uint8_t fetch();
-	uint8_t fetched = 0x00;
+	uint16_t fetched = 0x0000;
+	uint32_t addr_abs = 0x000000;
+	int16_t addr_rel = 0x0000;
+	uint8_t opcode = 0x00;
+	uint8_t cycles = 0;
 
 
 private:
+	uint8_t read(uint32_t address);
+	void write(uint32_t address, uint8_t data);
+
+	uint8_t getflag(Flag flag) const;
+	void setflag(Flag flag, bool value);
+
+	Bus* bus = nullptr;
+
 	struct instruction 
 	{
 		std::string name;
@@ -91,4 +105,3 @@ private:
 
 	std::vector<instruction> lookup;
 };
-

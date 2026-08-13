@@ -26,3 +26,79 @@ CPU_65816::CPU_65816() {
 		{"BEQ", &ref::BEQ, &ref::RL, 2}, {"SBC", &ref::SBC, &ref::DRII, 5}, {"SBC", &ref::SBC, &ref::DRI, 5}, {"SBC", &ref::SBC, &ref::SRII, 7}, {"PEA", &ref::PEA, &ref::AB, 5}, {"INC", &ref::INC, &ref::DRX, 6}, {"SBC", &ref::SBC, &ref::DRX, 4}, {"SBC", &ref::SBC, &ref::DRIIL, 6}, {"SED", &ref::SED, &ref::IMP, 2}, {"SBC", &ref::SBC, &ref::ABY, 4}, {"PLX", &ref::PLX, &ref::ST, 4}, {"XCE", &ref::XCE, &ref::IMP, 2}, {"JSR", &ref::JSR, &ref::ABDI, 8}, {"SBC", &ref::SBC, &ref::ABX, 4}, {"INC", &ref::INC, &ref::ABX, 7}, {"SBC", &ref::SBC, &ref::ABIL, 5}, // F
 	};
 }
+
+CPU_65816::CPU_65816(Bus& connectedBus): CPU_65816()
+{
+	bus = &connectedBus;
+}
+
+uint8_t CPU_65816::read(uint32_t address)
+{
+	if (bus == nullptr)
+		return 0xFF;
+
+	return bus->read(address & 0xFFFFFF);
+}
+
+void CPU_65816::write(uint32_t address, uint8_t data)
+{
+	if (bus != nullptr)
+		bus->write(address & 0xFFFFFF, data);
+}
+
+uint8_t CPU_65816::getflag(Flag flag) const
+{
+	return (status & static_cast<uint8_t>(flag)) != 0;
+}
+
+void CPU_65816::setflag(Flag flag, bool value)
+{
+	const uint8_t mask = static_cast<uint8_t>(flag);
+
+	if (value)
+		status |= mask;
+	else
+		status &= static_cast<uint8_t>(~mask);
+}
+
+void CPU_65816::reset()
+{
+	A = 0x0000;
+	X = 0x0000;
+	Y = 0x0000;
+	STKP = 0x0000;
+	DBR = 0x00;
+	PBR = 0x00;
+	D = 0x0000;
+	PC = 0x0000;
+	status = 0x00;
+	fetched = 0x0000;
+	addr_abs = 0x000000;
+	addr_rel = 0x0000;
+	opcode = 0x00;
+	cycles = 0;
+}
+
+void CPU_65816::clock()
+{
+	if (cycles == 0)
+	{
+		const uint32_t programAddress =
+			(static_cast<uint32_t>(PBR) << 16) | PC;
+
+		opcode = read(programAddress);
+		PC = static_cast<uint16_t>(PC + 1);
+
+		cycles = lookup[opcode].cycles;
+
+		const uint8_t additionalAddressCycles =
+			(this->*lookup[opcode].addrmode)();
+		const uint8_t additionalOperationCycles =
+			(this->*lookup[opcode].operate)();
+
+		cycles += additionalAddressCycles & additionalOperationCycles;
+	}
+
+	if (cycles > 0)
+		--cycles;
+}

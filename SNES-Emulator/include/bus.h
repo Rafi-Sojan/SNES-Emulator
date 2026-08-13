@@ -17,8 +17,8 @@ struct Bus
 public:
     Bus();
     
-    uint8_t read(uint16_t address); // reading the addresses stored in the registers
-    void write(uint16_t address, uint8_t data); // writing the addresses in the registers
+    uint8_t read(uint32_t address); // reading a 24-bit SNES address
+    void write(uint32_t address, uint8_t data); // writing a 24-bit SNES address
     uint8_t wram_alloc[WRAM_SIZE]; // simulating the work ram size
     uint8_t vram_alloc[VRAM_SIZE]; // simulating the video ram size
     uint8_t aram_alloc[ARAM_SIZE]; // simulating the audio ram size
