@@ -98,3 +98,48 @@ void CPU_65816::clock()
 	if (cycles > 0)
 		--cycles;
 }
+
+uint32_t CPU_65816::make24bitaddress(uint8_t bank, uint16_t offset) {
+	return (static_cast<uint32_t>(bank) << 16) | offset; // creates 24 bit address by performing bitwise OR operation between the 8 bit data bank address and 16 bit offset address
+}
+
+uint16_t CPU_65816::read16(uint32_t address) {
+	uint8_t low = read(address);
+	uint8_t high = read(address + 1);
+
+	return static_cast<uint16_t>(low) | (static_cast<uint16_t>(high) << 8);
+}
+
+uint32_t CPU_65816::read24(uint32_t address) {
+	
+	uint32_t b0 = read(address);
+	uint32_t b1 = read(address);
+	uint32_t b2 = read(address);
+
+	return b0 | (b1 << 0) | (b2 << 16);
+}
+
+uint8_t CPU_65816::IMPMF() {
+	if (accumulatoris8bit()) {
+		fetched = read(make24bitaddress(PBR, PC));
+		PC++;
+	}
+	else {
+		fetched = read16(make24bitaddress(PBR, PC));
+		PC += 2;
+	}
+
+	return 0;
+}
+
+uint8_t CPU_65816::LDA() {
+	writeaccumulator(fetched);
+
+	const uint16_t value = readaccumulator();
+	const uint16_t signBit = accumulatoris8bit() ? 0x0080 : 0x8000;
+
+	setflag(Flag::Z, value == 0);
+	setflag(Flag::N, (value & signBit) != 0);
+
+	return 0;
+}

@@ -77,6 +77,7 @@ public:
 	void reset();
 	void irq();
 	void nmi();
+	void adcBinary(uint16_t operand);
 
 	uint8_t fetch();
 	uint16_t fetched = 0x0000;
@@ -89,9 +90,18 @@ public:
 private:
 	uint8_t read(uint32_t address); // reads the address
 	void write(uint32_t address, uint8_t data); // writes the address
-
 	uint8_t getflag(Flag flag) const; // gets the flag 
 	void setflag(Flag flag, bool value); // sets the flag value true or false (0 or 1)
+	bool accumulatoris8bit(); // checks if the accumulator is 8 bit
+	bool indexis8bit(); // checks if the index is 8 bit 
+	uint16_t readaccumulator(); // reads from address from the accumulator 
+	void writeaccumulator(uint16_t value); // writes the address into the accumulator register
+	uint16_t readX(); // reads the address from the X register
+	void writeX(uint16_t value); // writes the address into the X register
+	void writeY(uint16_t value); // writes the address into the Y register
+	uint16_t read16(uint32_t addr); // reads 16 bit address 
+	uint32_t read24(uint32_t addr); // reads 24 bit address
+	uint32_t make24bitaddress(uint8_t bank, uint16_t offset); // creates 24 bit address by adding the 8 bit data bank register with the 16 bit offset register
 
 	Bus* bus = nullptr;
 
