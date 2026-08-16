@@ -1,4 +1,4 @@
-﻿#include "../include/emulator.h"
+#include "../include/emulator.h"
 #include <SFML/Graphics.hpp>
 
 int main()

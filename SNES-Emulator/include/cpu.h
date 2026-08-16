@@ -24,6 +24,11 @@ public:
 	uint16_t PC = 0x0000; // program counter 
 	uint8_t status = 0x00; // status register
 	uint8_t PBR = 0x00; //program bank register
+	bool E = true; // emulation mode
+	bool waiting = false;
+	bool stopped = false;
+	bool irqLine = false;
+	bool nmiPendingFlag = false;
 
 	enum class Flag : uint8_t {
 		C = 0x01, // carry
@@ -92,16 +97,53 @@ private:
 	void write(uint32_t address, uint8_t data); // writes the address
 	uint8_t getflag(Flag flag) const; // gets the flag 
 	void setflag(Flag flag, bool value); // sets the flag value true or false (0 or 1)
-	bool accumulatoris8bit(); // checks if the accumulator is 8 bit
-	bool indexis8bit(); // checks if the index is 8 bit 
-	uint16_t readaccumulator(); // reads from address from the accumulator 
+	bool accumulatoris8bit() const; // checks if the accumulator is 8 bit
+	bool indexis8bit() const; // checks if the index is 8 bit 
+	uint16_t readaccumulator() const; // reads from the accumulator 
 	void writeaccumulator(uint16_t value); // writes the address into the accumulator register
-	uint16_t readX(); // reads the address from the X register
+	uint16_t readX() const; // reads the address from the X register
+	uint16_t readY() const; // reads the address from the Y register
 	void writeX(uint16_t value); // writes the address into the X register
 	void writeY(uint16_t value); // writes the address into the Y register
 	uint16_t read16(uint32_t addr); // reads 16 bit address 
 	uint32_t read24(uint32_t addr); // reads 24 bit address
 	uint32_t make24bitaddress(uint8_t bank, uint16_t offset); // creates 24 bit address by adding the 8 bit data bank register with the 16 bit offset register
+	uint8_t fetch8(); // fetches 8 bit external address
+	uint16_t fetch16(); // fetches 16 bit external address
+	uint32_t fetch24(); // fetches 24 bit external address
+	void push8(uint8_t value); // pushes 8 bit address into the stack
+	uint8_t pull8(); // pulls 8 bit address from top of the stack
+	void push16(uint16_t value); // pushes 16 bit address into the stack
+	uint16_t pull16(); // pulls 16 bit address from top of the stack
+	void forceEmulationWidths(); // forces width of the address
+	uint16_t accumulatorMask() const; // masks the accumulator
+	uint16_t indexMask() const; // masks the index registers
+	uint16_t accumulatorSignBit() const; 
+	uint16_t indexSignBit() const;
+	uint16_t readOperand(); // reads the operand
+	uint16_t readOperandWidth(bool indexWidth);
+	void writeOperand(uint16_t value); // writes the operand
+	void updateNZ(uint16_t value, uint16_t mask, uint16_t signBit); // updates the value, mask and signBit
+	void compareValues(uint16_t left, uint16_t right, uint16_t mask, uint16_t signBit); // compares
+	void serviceInterrupt(uint16_t vector, bool nativeFrame, bool softwareBreak = false);
+	void servicePendingInterrupts();
+	bool irqPending() const;
+	void branchIf(bool condition);
+	void decimalAdc(uint16_t operand);
+	void decimalSbc(uint16_t operand);
+
+	enum class OperandKind : uint8_t {
+		None,
+		Immediate,
+		Memory,
+		Accumulator,
+		Relative,
+		BlockMove
+	};
+
+	OperandKind operandKind = OperandKind::None;
+	uint8_t blockDestinationBank = 0;
+	uint8_t blockSourceBank = 0;
 
 	Bus* bus = nullptr;
 
