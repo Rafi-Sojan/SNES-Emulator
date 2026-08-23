@@ -40,6 +40,38 @@ void Joypad::d_Y() {
 
 }
 
+void Joypad::d_LS() {
+
+}
+
+void Joypad::d_RS() {
+
+}
+
+void Joypad::changefilters() {
+
+}
+
+void Joypad::stopemulation() {
+
+}
+
+void Joypad::speedemulation() {
+
+}
+
+void Joypad::restartemulation() {
+
+}
+
+void Joypad::savestate() {
+
+}
+
+void Joypad::loadstate() {
+
+}
+
 void Joypad::forceblank() {
 
 }

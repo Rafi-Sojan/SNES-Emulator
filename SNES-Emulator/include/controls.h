@@ -16,7 +16,7 @@
 class Joypad {
 public:
 
-	// these are my preferrable controller settings i use for playing most of the games in snes, preferrably for Super Metroid  you can change the controls as you wish  
+	// these are my preferrable controller settings i use for playing most of the games in snes, preferrably for Super Metroid, you can change the controls as you wish through the window interface after i have done developing it 
 	Joypad() = default;
 	void movementinput() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
@@ -49,6 +49,18 @@ public:
 			decreasebrightness();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
 			forceblank();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1))
+			savestate();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2))
+			loadstate();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+			speedemulation();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::BackSlash))
+			stopemulation();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3))
+			restartemulation();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F4))
+			changefilters();
 	}
 
 private:
@@ -67,4 +79,10 @@ private:
 	void d_Start();
 	void d_Select();
 	void forceblank();
+	void stopemulation();
+	void speedemulation();
+	void changefilters();
+	void restartemulation();
+	void savestate();
+	void loadstate();
 };
