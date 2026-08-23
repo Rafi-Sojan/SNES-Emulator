@@ -31,38 +31,38 @@ public:
 	};
 
 	//instructions
-	uint8_t ADC(), AND(), ADDW();
-	uint8_t AND1(), ASL(), BBC();
-	uint8_t BBS(), BBS(), BCC();
-	uint8_t BCS(), BEQ(), BMI();
-	uint8_t BNE(), BPL(), BVC();
-	uint8_t BVS(), BRA(), BRK();
-	uint8_t CALL(), CBNE(), CLR1();
-	uint8_t CLRC(), CLRP(), CLRV();
-	uint8_t CMP(), CMPW(), DAA();
-	uint8_t DAS(), DBNZ(), DEC();
-	uint8_t DECW(), DI(), DIV();
-	uint8_t EI(), EOR(), EOR1();
-	uint8_t INC(), INCW(), JMP();
-	uint8_t LSR(), MOV(), MOV1();
-	uint8_t MOVW(), MUL(), NOP();
-	uint8_t NOT1(), NOTC(), OR();
-	uint8_t OR1(), PCALL(), POP();
-	uint8_t PUSH(), RET(), RETI();
-	uint8_t ROL(), ROR(), SBC();
-	uint8_t SET1(), SETC(), SETP();
-	uint8_t SLEEP(), STOP(), SUBW();
-	uint8_t TCALL(), TCLR1(), TSET();
-	uint8_t XCN(), PCALL(), TCALL();
+	uint8_t ADC(), AND(), ADDW(); // Add with a Carry, Perform AND Operation, ADD to 16 bit 
+	uint8_t AND1(), ASL(), BBC(); // AND with a single bit carry, Arithmetic shift left
+	uint8_t BBS(), BSS(), BCC(); // Branch if bit is clear, Branch if bit is set, Branch if carry clear
+	uint8_t BCS(), BEQ(), BMI(); // Branch if carry set, Branch if equal, Branch if Negative
+	uint8_t BNE(), BPL(), BVC(); // Branch if not equal, Branch if Positive, Branch if overflow clear
+	uint8_t BVS(), BRA(), BRK(); // Branch if overflow set, Branch always, interrupt
+	uint8_t CALL(), CBNE(), CLR1(); // Call routine, Compare and branch if not equal, Clear memory bit
+	uint8_t CLRC(), CLRP(), CLRV(); // Clear carry, Clear direct page flag, Clear overflow
+	uint8_t CMP(), CMPW(), DAA(); // Compare, Compare with 16 bit, Decimal adjust after addition
+	uint8_t DAS(), DBNZ(), DEC(); // Decimal adjust after subtraction, Decrement and bracnch if nonzero
+	uint8_t DECW(), DI(), DIV(); // Decrememnt 16 bit, Disable Interrupts, performs division
+	uint8_t EI(), EOR(), EOR1(); // enable interrupts, perform XOR operation, perform XOR with memory bit
+	uint8_t INC(), INCW(), JMP(); // Increment, Increment for 16 bit, Jump 
+	uint8_t LSR(), MOV(), MOV1(); // Shift right, Move byte, Move single bit
+	uint8_t MOVW(), MUL(), NOP(); // Move 16 bit, multiply, No operation
+	uint8_t NOT1(), NOTC(), OR(); // invert memory bit, invert carry, perform OR operation 
+	uint8_t OR1(), PCALL(), POP(); // perform OR with memory bit, page call, pop stack
+	uint8_t PUSH(), RET(), RETI(); // push stack, return from routine, return from interrupt
+	uint8_t ROL(), ROR(), SBC(); // Rotate left through carry, Rotate right through carry, Subtract with carry
+	uint8_t SET1(), SETC(), SETP(); // set memory bit, set carry, set page flag
+	uint8_t SLEEP(), STOP(), SUBW(); // enter sleep state, stop cpu, subtract from 16 bit
+	uint8_t TCALL(), TCLR1(), TSET(); // table based routine, test and clear bit, test and set 
+	uint8_t XCN(); // exchange 
 
-	uint8_t XXX();
-	void clock();
-	void reset();
-	uint8_t fetch();
-	uint16_t fetched = 0x0000;
-	uint16_t addr_abs = 0x0000;
-	uint8_t addr_rel = 0x00;
-	uint8_t cycles = 0;
+	uint8_t XXX(); // lookup 
+	void clock(); // lookup the operand and perform the operation per cycles
+	void reset(); // resets the addresses
+	uint8_t fetch(); // fetches the address
+	uint16_t fetched = 0x0000; // fetched external address 
+	uint16_t addr_abs = 0x0000; // absolute addressing 
+	uint8_t addr_rel = 0x00; // relative addressing
+	uint8_t cycles = 0; // number of cycles
 
 private:
 	uint8_t read(uint16_t address); // reads the address
