@@ -30,6 +30,16 @@ public:
 		C = 0x01  // Carry
 	};
 
+	//addressing modes, i reused the addressing modes i declared in 65c816 saved my time a lot
+
+	uint8_t IMP(), IMPMF(), IMPIF(), IMP8B(), IMM(); // implied, immediate[memoryflag], immediate[indexflag], immediate[8-bit]
+	uint8_t RL(), RLL(); // relative, relative long
+	uint8_t DR(), DRX(), DRY(), DRI(), DRID(), DRII(), DRIL(), DRIIL(); // direct, directindexedX, directIndexedY, directindirect, directindexedindirect, directindirectindexed, directindirectlong, directindirectindexedlong
+	uint8_t AB(), ABX(), ABY(), ABL(), ABIL(); // absolute, absX, absY, abslong, absindexedlong
+	uint8_t SR(), SRII(), ST(); // stackrelative, stackrelativeindirectindexed, Stack
+	uint8_t ABD(), ABDI(), ABDIL(), ABDII(); // absindirect, absindirectlong, absindexedindirect
+	uint8_t AC(), IMA(), BM(); // accumulator, impaccumulator, blockmove
+
 	//instructions
 	uint8_t ADC(), AND(), ADDW(); // Add with a Carry, Perform AND Operation, ADD to 16 bit 
 	uint8_t AND1(), ASL(), BBC(); // AND with a single bit carry, Arithmetic shift left
@@ -81,4 +91,14 @@ private:
 	void push16(uint16_t value); // pushes the 16 bit address into the stack
 	uint8_t pull8(); // pulls the 8 bit address if it's on the top of the stack
 	uint16_t pull16(); // pulls the 16 bit address if it's on the top of the stack
+
+	struct instruction // reads from the opcode map 
+	{
+		std::string name;
+		uint8_t(Spc_700::* operate)(void) = nullptr;
+		uint8_t(Spc_700::* addrmode)(void) = nullptr;
+		uint8_t cycles = 0;
+	};
+
+	std::vector<instruction> lookup;
 };
