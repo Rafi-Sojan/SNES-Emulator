@@ -12,6 +12,7 @@
 
 class Spc_700 {
 public:
+	Spc_700();
 	uint8_t A = 0x00; // 8 bit Accumulator
 	uint8_t X = 0x00; // 8 bit X register
 	uint8_t Y = 0x00; // 8 bit Y Register

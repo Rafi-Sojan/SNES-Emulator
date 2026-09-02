@@ -24,21 +24,6 @@ void ppu::incrementVRAMAddress() {
 	vramAddress = (vramAddress + increment) & 0x7FFF;
 }
 
-void ppu::VMDATAL(uint8_t value) {
-	vram[vramByteAddress()] = value;
-
-	if ((vmain & 0x80) == 0)
-		incrementVRAMAddress();
-}
-
-void ppu::VMDATAH(uint8_t value) {
-	uint16_t address = vramByteAddress() + 1;
-	vram[address] = value;
-
-	if ((vmain & 0x80) != 0)
-		incrementVRAMAddress();
-} 
-
 uint16_t ppu::vramByteAddress() const {
 	return static_cast<uint16_t> ((vramAddress & 0x7FFF) << 1);
 }
